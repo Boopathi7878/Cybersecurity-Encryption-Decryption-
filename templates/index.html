@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Playfair Cipher</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h2>Playfair Cipher Web App</h2>
+    <form method="post">
+      <label>Key:</label>
+      <input type="text" name="key" required value="{{ key }}">
+
+      <label>Text:</label>
+      <textarea name="text" rows="4" required>{{ text }}</textarea>
+
+      <div class="buttons">
+        <button type="submit" name="action" value="encrypt">Encrypt</button>
+        <button type="submit" name="action" value="decrypt">Decrypt</button>
+      </div>
+    </form>
+
+    {% if result %}
+    <h3>Result:</h3>
+    <div class="result">{{ result }}</div>
+    {% endif %}
+  </div>
+</body>
+</html>
