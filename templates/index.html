@@ -1,30 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Playfair Cipher</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="UTF-8">
+    <title>Playfair Cipher - Captain America Edition</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0a0a23, #1a1a40);
+            color: white;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        h1 {
+            margin-top: 30px;
+            font-size: 2.5rem;
+            color: #fff;
+            text-shadow: 0 0 15px #00bfff, 0 0 30px #ff0000;
+        }
+
+        .shield {
+            width: 120px;
+            margin: 20px auto;
+            border-radius: 50%;
+            box-shadow: 0 0 30px rgba(255,0,0,0.8), 0 0 60px rgba(0,0,255,0.6);
+            animation: spin 10s linear infinite;
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .box {
+            background: rgba(255,255,255,0.05);
+            border: 2px solid #00bfff;
+            border-radius: 20px;
+            box-shadow: 0 0 15px #00bfff, inset 0 0 20px rgba(255,0,0,0.4);
+            width: 350px;
+            padding: 20px;
+            text-align: left;
+        }
+
+        .box h2 {
+            text-align: center;
+            margin-bottom: 15px;
+            color: #ff4757;
+            text-shadow: 0 0 10px #ff0000;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border-radius: 8px;
+            border: none;
+            outline: none;
+            resize: none;
+            font-size: 14px;
+        }
+
+        textarea {
+            height: 80px;
+        }
+
+        .btn {
+            margin-top: 15px;
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .encrypt-btn {
+            background: #007bff;
+            color: white;
+            box-shadow: 0 0 10px #007bff;
+        }
+
+        .encrypt-btn:hover {
+            background: #0056b3;
+        }
+
+        .decrypt-btn {
+            background: #ff4757;
+            color: white;
+            box-shadow: 0 0 10px #ff4757;
+        }
+
+        .decrypt-btn:hover {
+            background: #c82333;
+        }
+
+        .result {
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(0,0,0,0.3);
+            border: 1px dashed #00bfff;
+            border-radius: 10px;
+            min-height: 40px;
+            font-weight: bold;
+            color: #00ffcc;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h2>Playfair Cipher Web App</h2>
-    <form method="post">
-      <label>Key:</label>
-      <input type="text" name="key" required value="{{ key }}">
+    <h1>🛡 Playfair Cipher - Captain America Style 🛡</h1>
+    <img src="https://upload.wikimedia.org/wikipedia/en/3/3f/CaptainAmericaShield.png" class="shield" alt="Captain America Shield">
 
-      <label>Text:</label>
-      <textarea name="text" rows="4" required>{{ text }}</textarea>
+    <div class="container">
+        <!-- Encryption Box -->
+        <div class="box">
+            <h2>Encryption</h2>
+            <form method="POST">
+                <label for="key">Key:</label>
+                <input type="text" name="key" value="{{ key }}" required>
 
-      <div class="buttons">
-        <button type="submit" name="action" value="encrypt">Encrypt</button>
-        <button type="submit" name="action" value="decrypt">Decrypt</button>
-      </div>
-    </form>
+                <label for="text">Plaintext:</label>
+                <textarea name="text" required>{{ text }}</textarea>
 
-    {% if result %}
-    <h3>Result:</h3>
-    <div class="result">{{ result }}</div>
-    {% endif %}
-  </div>
+                <input type="hidden" name="action" value="encrypt">
+                <button type="submit" class="btn encrypt-btn">Encrypt 🔒</button>
+            </form>
+
+            {% if result and request.form.get("action") == "encrypt" %}
+            <div class="result">
+                {{ result }}
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Decryption Box -->
+        <div class="box">
+            <h2>Decryption</h2>
+            <form method="POST">
+                <label for="key">Key:</label>
+                <input type="text" name="key" value="{{ key }}" required>
+
+                <label for="text">Ciphertext:</label>
+                <textarea name="text" required>{{ text }}</textarea>
+
+                <input type="hidden" name="action" value="decrypt">
+                <button type="submit" class="btn decrypt-btn">Decrypt 🔓</button>
+            </form>
+
+            {% if result and request.form.get("action") == "decrypt" %}
+            <div class="result">
+                {{ result }}
+            </div>
+            {% endif %}
+        </div>
+    </div>
 </body>
 </html>
